@@ -1,21 +1,22 @@
 import mongoose, { Schema } from "mongoose";
 
-const productOnlinePrice = new Schema(
+const productOnlineSchema = new Schema(
   {
     sku: {
       type: String,
     },
     price: {
       type: Object,
-      raw: {
-        type: Number,
-      },
-      discount: {
-        type: Number,
-      },
+      latitude: { type: Number },
+      longitude: { type: Number },
     },
+    // location: {
+    //   type: Object,
+    //   latitude: { type: mongoose.Types.Decimal128 },
+    //   longitude: { type: mongoose.Types.Decimal128 },
+    // },
   },
   { timestamps: true }
 );
 
-export default mongoose.model("ProductOnlinePrice", productOnlinePrice);
+export default mongoose.model("ProductOnline", productOnlineSchema);
