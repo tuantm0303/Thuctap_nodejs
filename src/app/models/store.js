@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const store = new Schema(
+const storeSchema = new Schema(
   {
     name: {
       type: String,
@@ -12,8 +12,9 @@ const store = new Schema(
       type: String,
     },
     location: {
-      latitude: Float32Array,
-      longitude: Float32Array,
+      type: Object,
+      latitude: { type: mongoose.Types.Decimal128 },
+      longitude: { type: mongoose.Types.Decimal128 },
     },
     name: {
       type: String,
@@ -31,4 +32,4 @@ const store = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Store", store);
+export default mongoose.model("Store", storeSchema);
