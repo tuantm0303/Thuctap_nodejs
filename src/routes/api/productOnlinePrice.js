@@ -9,10 +9,10 @@ import {
 
 const routerProductOnline = Router();
 
-routerProductOnline.post("/productsonline", create);
-routerProductOnline.get("/productsonline", list);
-routerProductOnline.get("/productsonline/:id", read);
-routerProductOnline.put("/productsonline/:id", update);
-routerProductOnline.delete("/productsonline/:id", remove);
+routerProductOnline.post("/productonlines", create);
+routerProductOnline.get("/productonlines", list);
+routerProductOnline.get("/productonlines/:id", read);
+routerProductOnline.put("/productonlines/:id", update);
+routerProductOnline.delete("/productonlines/:id", remove);
 
 export default routerProductOnline;

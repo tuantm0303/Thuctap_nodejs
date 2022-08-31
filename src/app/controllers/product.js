@@ -23,7 +23,7 @@ export const read = async (req, res) => {
   }
 };
 
-export const add = async (req, res) => {
+export const create = async (req, res) => {
   const doc = req.body;
   try {
     const product = await new Product(doc).save();
@@ -35,7 +35,7 @@ export const add = async (req, res) => {
   }
 };
 
-export const edit = async (req, res) => {
+export const update = async (req, res) => {
   const condition = { _id: req.params.id };
   const doc = req.body;
   const option = { new: true };
