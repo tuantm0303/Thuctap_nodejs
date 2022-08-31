@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const productStorePrice = new Schema(
+const productStoreSchema = new Schema(
   {
     sku: {
       type: String,
@@ -10,15 +10,11 @@ const productStorePrice = new Schema(
     },
     price: {
       type: Object,
-      raw: {
-        type: Number,
-      },
-      discount: {
-        type: Number,
-      },
+      raw: { type: Number },
+      discount: { type: Number },
     },
   },
   { timestamps: true }
 );
 
-export default mongoose.model("ProductStorePrice", productStorePrice);
+export default mongoose.model("ProductStore", productStoreSchema);
