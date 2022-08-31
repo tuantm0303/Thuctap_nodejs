@@ -68,7 +68,6 @@ export const remove = async (req, res) => {
 export const search = async (req, res) => {
   const key = req.query.q;
   try {
-    console.log(key);
     const result = await Product.find({ $text: { $search: key } }).exec();
     return res.status(200).json(result);
   } catch (error) {
