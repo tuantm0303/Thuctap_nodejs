@@ -4,6 +4,7 @@ import {
   list,
   read,
   remove,
+  search,
   update,
 } from "../../app/controllers/product";
 
@@ -14,5 +15,6 @@ routerProduct.get("/products", list);
 routerProduct.get("/products/:id", read);
 routerProduct.put("/products/:id", update);
 routerProduct.delete("/products/:id", remove);
+routerProduct.get("/search", search);
 
 export default routerProduct;
