@@ -15,9 +15,9 @@ export const read = async (req, res) => {
   const filter = { _id: req.params.id };
   try {
     const store = await Store.findOne(filter).exec();
-    res.status(200).json(store);
+    return res.status(200).json(store);
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Không có cửa hàng nào!",
     });
   }

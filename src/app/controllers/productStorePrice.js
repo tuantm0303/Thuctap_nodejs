@@ -3,9 +3,9 @@ import ProductStore from "../models/productStorePrice";
 export const list = async (req, res) => {
   try {
     const products = await ProductStore.find({}).exec();
-    res.status(200).json(products);
+    return res.status(200).json(products);
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Không có sản phẩm!",
     });
   }
@@ -15,9 +15,9 @@ export const read = async (req, res) => {
   const filter = { _id: req.params.id };
   try {
     const products = await ProductStore.findOne(filter).exec();
-    res.status(200).json(products);
+    return res.status(200).json(products);
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Không có sản phẩm!",
     });
   }
@@ -45,9 +45,9 @@ export const update = async (req, res) => {
       doc,
       option
     ).exec();
-    res.status(200).json(product);
+    return res.status(200).json(product);
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Không sửa được sản phẩm!",
     });
   }
@@ -57,9 +57,9 @@ export const remove = async (req, res) => {
   const filter = { _id: req.params.id };
   try {
     const product = await ProductStore.findOneAndDelete(filter);
-    res.status(200).json(product);
+    return res.status(200).json(product);
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Không xóa được sản phẩm!",
     });
   }
