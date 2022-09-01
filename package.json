@@ -4,7 +4,10 @@
   "description": "thuc tap nodejs",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon ./src/app.js --exec babel-node -e js"
+    "start": "nodemon ./src/app.js --exec babel-node -e js",
+    "local": "set NODE_ENV=localhost nodemon ./src/app.js --exec babel-node -e js",
+    "dev": "NODE_ENV=development",
+    "pro": "NODE_ENV=production"
   },
   "repository": {
     "type": "git",

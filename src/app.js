@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 
-import connections from "./connections";
+import { mongoConnection } from "./connections";
 import routerProduct from "./routes/api/product";
 import routerStore from "./routes/api/store";
 import routerProductOnline from "./routes/api/productOnlinePrice";
