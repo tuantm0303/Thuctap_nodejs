@@ -10,6 +10,6 @@ export {
   storeModel as Store,
 };
 
-const model = [productModel, productOnlineModel, productStoreModel, storeModel];
+// const model = [productModel, productOnlineModel, productStoreModel, storeModel];
 
-export default model;
+// export default model;
