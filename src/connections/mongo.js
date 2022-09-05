@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
-import { mongo } from "../configs";
+import { configMongo } from "../configs";
 
-const configMongo = mongo[process.env];
+const runLocalhost = configMongo.localhost;
 
-console.log("Config mongo: ", configMongo);
-
-const connections = mongoose
-  .connect(`mongodb://localhost:27017/BiBoMart`)
+export const connectionsMongo = mongoose
+  .connect(
+    `${runLocalhost.uri}:${runLocalhost.port}/${runLocalhost.databaseName}`
+  )
   .then(() => console.log("Connect database success!"))
   .catch((error) => console.log(error));
 
-export default connections;
+export default connectionsMongo;

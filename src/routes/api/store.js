@@ -1,18 +1,12 @@
 import { Router } from "express";
-import {
-  create,
-  list,
-  read,
-  remove,
-  update,
-} from "../../app/controllers/store";
+import { StoreRoute } from "../../app/controllers";
 
 const routerStore = Router();
 
-routerStore.post("/stores", create);
-routerStore.get("/stores", list);
-routerStore.get("/stores/:id", read);
-routerStore.put("/stores/:id", update);
-routerStore.delete("/stores/:id", remove);
+routerStore.post("/", StoreRoute.create);
+routerStore.get("/", StoreRoute.list);
+routerStore.get("/:id", StoreRoute.read);
+routerStore.put("/:id", StoreRoute.update);
+routerStore.delete("/:id", StoreRoute.remove);
 
 export default routerStore;

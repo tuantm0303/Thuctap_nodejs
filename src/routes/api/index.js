@@ -1,8 +1,14 @@
 import { Router } from "express";
-import productRouter from "./product";
+import routerProduct from "./product";
+import routerProductOnline from "./productOnlinePrice";
+import routerProductStore from "./productStorePrice";
+import routerStore from "./store";
 
 const router = Router();
 
-router.use("/products", productRouter);
+router.use("/products", routerProduct);
+router.use("/productonlines", routerProductOnline);
+router.use("/productstores", routerProductStore);
+router.use("/stores", routerStore);
 
-export default routerProduct;
+export default router;

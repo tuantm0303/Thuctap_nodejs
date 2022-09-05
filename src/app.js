@@ -2,21 +2,15 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 
-import { mongoConnection } from "./connections";
-import routerProduct from "./routes/api/product";
-import routerStore from "./routes/api/store";
-import routerProductOnline from "./routes/api/productOnlinePrice";
-import routerProductStore from "./routes/api/productStorePrice";
+import { connectionsMongo } from "./connections";
+import routes from "./routes";
 
 const app = express();
 app.use(cors());
 app.use(morgan("tiny"));
 app.use(express.json());
 
-app.use("/api", routerProduct);
-app.use("/api", routerStore);
-app.use("/api", routerProductOnline);
-app.use("/api", routerProductStore);
+app.use(routes);
 
 const PORT = 8000;
 app.listen(PORT, () => {

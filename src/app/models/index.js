@@ -1,11 +1,15 @@
-const productModel = require("./product");
-const productOnlineModel = require("./productOnlinePrice");
-const productStorePriceModel = require("./productStorePrice");
-const storeModel = require("./store");
+import productModel from "./product";
+import productOnlineModel from "./productOnlinePrice";
+import productStoreModel from "./productStorePrice";
+import storeModel from "./store";
 
-module.exports = {
-  productModel,
-  productOnlineModel,
-  productStorePriceModel,
-  storeModel,
+export {
+  productModel as Product,
+  productOnlineModel as ProductOnline,
+  productStoreModel as ProductStore,
+  storeModel as Store,
 };
+
+const model = [productModel, productOnlineModel, productStoreModel, storeModel];
+
+export default model;

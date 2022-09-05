@@ -1,4 +1,4 @@
-import Product from "../models/product";
+import model from "../models";
 
 export const list = async (req, res) => {
   try {
@@ -6,7 +6,7 @@ export const list = async (req, res) => {
     return res.status(200).json(products);
   } catch (error) {
     return res.status(400).json({
-      message: "Không có sản phẩm!",
+      message: "Không có sản phẩm nào!",
     });
   }
 };
@@ -18,7 +18,7 @@ export const read = async (req, res) => {
     return res.status(200).json(products);
   } catch (error) {
     return res.status(400).json({
-      message: "Không có sản phẩm!wqe",
+      message: "Không có sản phẩm!",
     });
   }
 };

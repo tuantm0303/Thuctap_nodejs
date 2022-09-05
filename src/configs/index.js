@@ -1,7 +1,3 @@
-import mongo from "./mongo";
-import sql from "./sql";
+import * as configMongo from "./mongo";
 
-module.exports = {
-  mongo,
-  sql,
-};
+export { configMongo };

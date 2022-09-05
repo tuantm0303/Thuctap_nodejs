@@ -1,4 +1,4 @@
-import ProductOnline from "../models/productOnlinePrice";
+import { ProductOnline } from "../models";
 
 export const list = async (req, res) => {
   try {

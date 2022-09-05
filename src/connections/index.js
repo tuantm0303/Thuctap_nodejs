@@ -1,5 +1,3 @@
-import mongoConnection from "./mongo";
+import { connectionsMongo } from "./mongo";
 
-module.exports = {
-  mongoConnection,
-};
+export { connectionsMongo };

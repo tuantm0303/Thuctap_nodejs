@@ -1,5 +1,6 @@
-const productController = require("./product");
+import * as ProductRoute from "./product";
+import * as ProductOnlineRoute from "./productOnlinePrice";
+import * as ProductStoreRoute from "./productStorePrice";
+import * as StoreRoute from "./store";
 
-module.exports = {
-  productController,
-};
+export { ProductRoute, ProductOnlineRoute, ProductStoreRoute, StoreRoute };
