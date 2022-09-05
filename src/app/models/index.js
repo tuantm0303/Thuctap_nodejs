@@ -9,7 +9,3 @@ export {
   productStoreModel as ProductStore,
   storeModel as Store,
 };
-
-// const model = [productModel, productOnlineModel, productStoreModel, storeModel];
-
-// export default model;
