@@ -1,4 +1,5 @@
-import { Product } from "../models";
+import { startSession } from "mongoose";
+import { Product, ProductOnline, ProductStore } from "../models";
 
 export const list = async (req, res) => {
   try {
@@ -24,42 +25,146 @@ export const read = async (req, res) => {
 };
 
 export const create = async (req, res) => {
-  const doc = req.body;
+  const session = await startSession();
   try {
-    const product = await new Product(doc).save();
-    return res.status(200).json(product);
+    // Get data
+    const doc = req.body;
+    const productOnlinePriceDoc = doc.productOnlinePrice;
+    const listProductStorePriceDoc = doc.listProductStorePrice;
+
+    // Delete data price
+    delete doc.productOnlinePrice;
+    delete doc.listProductStorePrice;
+
+    // Start save data
+    session.startTransaction();
+    const product = await Product.create(doc);
+
+    const productOnlinePrice = await ProductOnline.create({
+      ...productOnlinePriceDoc,
+      sku: product.sku,
+    });
+
+    let listProductStorePriceResponse = [];
+    for (let productStorePriceDoc of listProductStorePriceDoc) {
+      const productStorePrice = await ProductStore.create({
+        ...productStorePriceDoc,
+        sku: product.sku,
+      });
+      listProductStorePriceResponse.push(productStorePrice);
+    }
+
+    // Commit transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    // Response
+    res.status(200).json({
+      ...product,
+      productOnlinePrice: productOnlinePrice,
+      productStorePrice: listProductStorePriceResponse,
+    });
   } catch (error) {
-    return res.status(400).json({
+    res.status(400).json({
+      status: 400,
       message: "Không thêm được sản phẩm!",
     });
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
   }
 };
 
 export const update = async (req, res) => {
-  const condition = { _id: req.params.id };
-  const doc = req.body;
-  const option = { new: true };
+  const session = await startSession();
   try {
-    const product = await Product.findOneAndUpdate(
-      condition,
-      doc,
+    // Get data
+    const filter = { _id: req.params.id };
+    const doc = req.body;
+    const option = { upsert: true };
+    const productOnlinePriceDoc = doc.productOnlinePrice;
+    const listProductStorePriceDoc = doc.listProductStorePrice;
+
+    // Delete data price
+    delete doc.productOnlinePrice;
+    delete doc.listProductStorePrice;
+
+    // Start save data
+    session.startTransaction();
+    const product = await Product.updateOne(filter, doc, option);
+    const skuDoc = { sku: doc.sku };
+    const productOnlinePrice = await ProductOnline.updateOne(
+      skuDoc,
+      { ...productOnlinePriceDoc, sku: product.sku },
       option
-    ).exec();
-    return res.status(200).json(product);
+    );
+
+    let listProductStorePriceResponse = [];
+    for (let productStorePriceDoc of listProductStorePriceDoc) {
+      const productStorePrice = await ProductStore.updateOne(
+        skuDoc,
+        { ...productStorePriceDoc, sku: product.sku },
+        option
+      );
+      listProductStorePriceResponse.map((item) =>
+        item ? productStorePrice : null
+      );
+    }
+
+    // Commit transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    // Response
+    return res.status(200).json({
+      ...product,
+      productOnlinePrice: productOnlinePrice,
+      productStorePrice: listProductStorePriceResponse,
+    });
   } catch (error) {
-    return res.status(400).json({
+    await session.abortTransaction();
+    session.endSession();
+    res.status(400).json({
+      status: 400,
       message: "Không sửa được sản phẩm!",
     });
   }
 };
 
 export const remove = async (req, res) => {
-  const condition = { _id: req.params.id };
+  const session = await startSession();
   try {
-    const product = await Product.findOneAndDelete(condition);
-    return res.status(200).json(product);
+    // Get data
+    const filter = { _id: req.params.id };
+
+    // Start save data
+    session.startTransaction();
+    const product = await Product.findOneAndDelete(filter);
+
+    const productOnlinePrice = await ProductOnline.findOneAndDelete({
+      sku: product.sku,
+    });
+
+    const productStorePrice = await ProductStore.findOneAndDelete({
+      sku: product.sku,
+    });
+
+    // Commit transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    // Response
+    return res.status(200).json({
+      message: "Xóa thành công!",
+      ...product,
+      productOnlinePrice,
+      productStorePrice,
+    });
   } catch (error) {
-    return res.status(400).json({
+    await session.abortTransaction();
+    session.endSession();
+    res.status(400).json({
+      status: 400,
       message: "Không xóa được sản phẩm!",
     });
   }

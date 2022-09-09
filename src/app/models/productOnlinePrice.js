@@ -10,11 +10,6 @@ const productOnlineSchema = new Schema(
       latitude: { type: Number },
       longitude: { type: Number },
     },
-    // location: {
-    //   type: Object,
-    //   latitude: { type: mongoose.Types.Decimal128 },
-    //   longitude: { type: mongoose.Types.Decimal128 },
-    // },
   },
   { timestamps: true }
 );

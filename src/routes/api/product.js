@@ -1,5 +1,7 @@
 import { Router } from "express";
+import { startSession } from "mongoose";
 import { ProductRoute } from "../../app/controllers";
+import { Product, ProductOnline, ProductStore } from "../../app/models";
 
 const routerProduct = Router();
 
