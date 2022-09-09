@@ -1,4 +1,7 @@
-import * as ProductRoute from "./product";
-import * as StoreRoute from "./store";
+import productController from "./product";
+import storeController from "./store";
 
-export { ProductRoute, StoreRoute };
+module.exports = {
+  productController,
+  storeController,
+};

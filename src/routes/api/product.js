@@ -1,15 +1,13 @@
 import { Router } from "express";
-import { startSession } from "mongoose";
-import { ProductRoute } from "../../app/controllers";
-import { Product, ProductOnline, ProductStore } from "../../app/models";
+import { controller } from "../../app";
 
 const routerProduct = Router();
 
-routerProduct.post("/", ProductRoute.create);
-routerProduct.get("/", ProductRoute.list);
-routerProduct.get("/:id", ProductRoute.read);
-routerProduct.put("/:id", ProductRoute.update);
-routerProduct.delete("/:id", ProductRoute.remove);
-routerProduct.get("/search", ProductRoute.search);
+routerProduct.post("/", controller.productController.create);
+routerProduct.get("/", controller.productController.list);
+routerProduct.get("/:id", controller.productController.read);
+routerProduct.put("/:id", controller.productController.update);
+routerProduct.delete("/:id", controller.productController.remove);
+routerProduct.get("/search", controller.productController.search);
 
 export default routerProduct;
