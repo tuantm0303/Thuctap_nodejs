@@ -23,6 +23,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+// Encry password
 userSchema.pre("save", async function (next) {
   try {
     const salt = await bcrypt.genSalt(10);
@@ -34,6 +35,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+// Authenticate password
 userSchema.methods.isValidPassword = async function (password) {
   try {
     return await bcrypt.compare(password, this.password);

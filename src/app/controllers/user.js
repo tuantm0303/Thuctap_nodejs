@@ -1,8 +1,8 @@
+import jwt from "jsonwebtoken";
 import { User } from "../models";
 
 const signup = async (req, res) => {
   const { username, email, password, phone } = req.body;
-  console.log({ username, email, password });
   try {
     const exitUser = await User.findOne({ email }).exec();
     if (exitUser) {
@@ -18,11 +18,55 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     return res.status(400).json({
-      message: "Lỗi rồi anh êi",
+      message: "Fail!",
     });
   }
 };
 
+const signin = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email }).exec();
+    if (!user) {
+      return res.status(400).json({
+        message: "Không tồn tại email này!",
+      });
+    }
+
+    const checkPass = await user.isValidPassword(password);
+    if (!checkPass) {
+      return res.status(400).json({
+        message: "Sai mật khẩu!",
+      });
+    }
+
+    const token = jwt.sign({ _id: user.id }, "BiBoMart", { expiresIn: "2h" });
+
+    return res.status(200).json({
+      message: "Signin Success!",
+      token,
+      user: {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+      },
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Fail!",
+    });
+  }
+};
+
+const signout = async (req, res) => {
+  res.clearCookie("token");
+  return res.status(200).json({
+    message: "Signout Success!",
+  });
+};
+
 module.exports = {
   signup,
+  signin,
+  signout,
 };
