@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models";
-import configs from "../../configs";
+import middlewares from "../../middlewares";
+import passport from "passport";
 
 const signup = async (req, res) => {
   const { username, email, password, phone } = req.body;
@@ -24,71 +25,31 @@ const signup = async (req, res) => {
   }
 };
 
+// Passport local signin middlewares
 const signin = async (req, res, next) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email }).exec();
-    if (!user) {
+  passport.authenticate("local", (error, user, info) => {
+    if (error) {
       return res.status(400).json({
-        message: "Không tồn tại email này!",
+        message: "Fail!",
       });
     }
-    const checkPass = await user.isValidPassword(password);
-    if (!checkPass) {
-      return res.status(400).json({
-        message: "Sai mật khẩu!",
-      });
-    }
-
-    const token = jwt.sign({ _id: user.id }, configs.secrets.JWT_SECRENT, {
-      expiresIn: configs.secrets.JWT_MAX_AGE,
+    const token = jwt.sign({ sub: user }, middlewares.secrets.JWT_SECRENT, {
+      expiresIn: middlewares.secrets.JWT_MAX_AGE,
     });
+
+    if (info) {
+      return res.status(400).json(info);
+    }
 
     return res.status(200).json({
       message: "Signin Success!",
       token: `Bearer ` + token,
       user: {
-        _id: user._id,
         email: user.email,
-        name: user.name,
+        username: user.username,
       },
     });
-  } catch (error) {
-    return res.status(400).json({
-      message: "Fail!",
-    });
-  }
-};
-
-const authorization = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email }).exec();
-    if (!user) {
-      return res.status(400).json({
-        message: "Không tồn tại email này!",
-      });
-    }
-    const checkPass = await user.isValidPassword(password);
-    if (!checkPass) {
-      return res.status(400).json({
-        message: "Sai mật khẩu!",
-      });
-    }
-
-    return res.status(200).json({
-      message: "Successfuly!",
-      user: {
-        id: req.user._id,
-        email: req.user.email,
-        username: req.user.username,
-      },
-    });
-  } catch (error) {
-    return res.status(400).json({
-      message: "Fail!",
-    });
-  }
+  })(req, res, next);
 };
 
 const signout = async (req, res) => {
@@ -101,6 +62,5 @@ const signout = async (req, res) => {
 export default {
   signup,
   signin,
-  authorization,
   signout,
 };

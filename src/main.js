@@ -4,7 +4,7 @@ import morgan from "morgan";
 import expressSession from "express-session";
 import passport from "passport";
 import routes from "./routes";
-import configs from "./configs";
+import middlewares from "./middlewares";
 import { connectionsMongo } from "./connections";
 
 const app = express();
@@ -13,7 +13,8 @@ app.use(morgan("tiny"));
 app.use(express.json());
 
 // Passport setting
-app.use(expressSession({ secret: configs.secrets.JWT_SECRENT }));
+app.use(expressSession({ secret: middlewares.secrets.JWT_SECRENT }));
+// Khởi tạo passport
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(routes);
