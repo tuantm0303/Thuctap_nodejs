@@ -39,23 +39,23 @@ passport.use(
 );
 
 // Passport JWT
-// passport.use(
-//   new JwtStrategy(
-//     {
-//       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken("Authorization"),
-//       secretOrKey: secret.JWT_SECRENT,
-//     },
-//     async (payload, done) => {
-//       try {
-//         const user = await User.findOne(payload.id);
-//         if (!user) return done(null, false);
-//         done(null, user);
-//       } catch (error) {
-//         done(error, false);
-//       }
-//     }
-//   )
-// );
+passport.use(
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken("Authorization"),
+      secretOrKey: secret.JWT_SECRENT,
+    },
+    async (payload, done) => {
+      try {
+        const user = await User.findOne(payload.id);
+        if (!user) return done(null, false);
+        done(null, user);
+      } catch (error) {
+        done(error, false);
+      }
+    }
+  )
+);
 
 /**
  * 1. User login

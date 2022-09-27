@@ -1,4 +1,5 @@
 import passport from "passport";
+import createHttpError from "http-errors";
 
 /**
  * Description: JWT Auth middleware
@@ -9,11 +10,15 @@ import passport from "passport";
 
 // Submit form đăng nhập thì gọi chứng thực bằng authenticate
 const jwtAuth = (req, res, next) => {
-  console.log("authenticate");
   passport.authenticate("jwt", { session: false }, (error, user, info) => {
     if (error) {
-      console.log(error);
-      return;
+      return res.json(error);
+    }
+    if (!user) {
+      return next(createHttpError(403, "Forbidden"));
+    }
+    if (info) {
+      return res.json(info);
     }
     return next();
   })(req, res, next);
