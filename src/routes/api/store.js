@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { controller } from "../../app";
+import { jwtAuth } from "../../middlewares";
 
 const routerStore = Router();
+
+routerStore.use("/", jwtAuth);
 
 routerStore.post("/", controller.storeController.create);
 routerStore.get("/", controller.storeController.list);
