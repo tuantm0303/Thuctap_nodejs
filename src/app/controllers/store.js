@@ -53,7 +53,10 @@ const remove = async (req, res) => {
   const filter = { _id: req.params.id };
   try {
     const store = await Store.findOneAndDelete(filter).exec();
-    return res.status(200).json(store);
+    return res.status(200).json({
+      message: "Xóa thành công!",
+      store,
+    });
   } catch (error) {
     return res.status(400).json({
       message: "Không xóa được cửa hàng!",

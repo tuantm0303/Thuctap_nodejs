@@ -1,0 +1,293 @@
+openapi: 3.0.3
+info:
+  title: Swagger for ecommerce - OpenAPI 3.0
+  description: Mô tả API thực tập nodeJS ở BiBoMart
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: minhtuan0330@gmail.com
+  license:
+    name: Github
+    url: https://github.com/tuantm0303/Thuctap_nodejs
+  version: 1.0.11
+servers:
+  - url: http://localhost:8000/
+paths:
+  /api/products:
+    get:
+      summary: Lấy danh sách sản phẩm
+      tags:
+        - Get Products
+      responses:
+        "200":
+          description: Lấy sản phẩm thành công
+        "400":
+          description: Không lấy được sản phẩm
+    post:
+      summary: Thêm sản phẩm
+      tags:
+        - Add Product
+      responses:
+        "200":
+          description: Thêm sản phẩm thành công
+        "400":
+          description: Không thêm được sản phẩm
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Bắt buộc phải có các trường giống bên dưới"
+          required: true
+          schema:
+            $ref: "#/components/schemas/Product"
+  /api/products/{productId}:
+    get:
+      tags:
+        - Get One Product
+      summary: Lấy một sản phẩm
+      description: Returns a single pet
+      operationId: getProductById
+      parameters:
+        - name: productId
+          in: path
+          description: ID một sản phẩm
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lấy một sản phẩm thành công
+        "400":
+          description: Không lấy được sản phẩm
+    put:
+      tags:
+        - Put One Product
+      summary:
+        Sửa một sản phẩm
+        # parameters:
+        # - name: productId
+        #   in: path
+        #   description: ID product
+        #   required: true
+        #   schema:
+        #     type: string
+      responses:
+        "200":
+          description: Sửa một sản phẩm thành công
+        "400":
+          description: Không sửa được sản phẩm
+    delete:
+      tags:
+        - Delete One Product
+      summary:
+        Xóa một sản phẩm
+        # parameters:
+        # - name: productId
+        #   in: path
+        #   description: ID product
+        #   required: true
+        #   schema:
+        #     type: string
+      responses:
+        "200":
+          description: Xóa một sản phẩm thành công
+        "400":
+          description: Không xóa được sản phẩm
+  /api/stores:
+    get:
+      summary: Lấy danh sách cửa hàng
+      tags:
+        - Get Store
+      responses:
+        "200":
+          description: Lấy cửa hàng thành công
+        "400":
+          description: Không lấy được cửa hàng
+    post:
+      summary: Thêm cửa hàng
+      tags:
+        - Add Store
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Bắt buộc phải có các trường giống bên dưới"
+          required: true
+          schema:
+            $ref: "#/components/schemas/Store"
+      responses:
+        "200":
+          description: Thêm cửa hàng thành công
+        "400":
+          description: Không thêm được cửa hàng
+  /api/stores/{storeId}:
+    get:
+      tags:
+        - Get One Store
+      summary: Lấy một cửa hàng
+      description: Returns a single pet
+      operationId: getStoreById
+      parameters:
+        - name: productId
+          in: path
+          description: ID một cửa hàng
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lấy một cửa hàng thành công
+        "400":
+          description: Không lấy được cửa hàng
+    put:
+      tags:
+        - Put One Store
+      summary: Sửa một cửa hàng
+      description: Returns a single pet
+      operationId: putStoreById
+      parameters:
+        - name: storeId
+          in: path
+          description: ID một cửa hàng
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Sửa một cửa hàng thành công
+        "400":
+          description: Không sửa được cửa hàng
+    delete:
+      tags:
+        - Delete One Store
+      summary: Xóa một cửa hàng
+      description: Returns a single pet
+      operationId: deleteStoreById
+      parameters:
+        - name: productId
+          in: path
+          description: ID một cửa hàng
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Xóa một cửa hàng thành công
+        "400":
+          description: Không xóa được cửa hàng
+
+# Models
+components:
+  schemas:
+    Product:
+      properties:
+        _id:
+          type: string
+        brand:
+          type: number
+        name:
+          type: string
+        parent:
+          type: number
+        quantity:
+          type: number
+        sku:
+          type: string
+        status:
+          type: number
+        thumbnail:
+          type: string
+        unit:
+          type: string
+        productOnlinePrice:
+          type: object
+          properties:
+            price:
+              type: object
+              properties:
+                raw:
+                  type: number
+                discount:
+                  type: number
+        listProductStorePrice:
+          type: object
+          properties:
+            store:
+              type: string
+            price:
+              type: object
+              properties:
+                raw:
+                  type: number
+                discount:
+                  type: number
+
+    ProductOnlinePrices:
+      properties:
+        _id:
+          type: string
+        sku:
+          type: string
+        price:
+          type: object
+          properties:
+            raw:
+              type: number
+            discount:
+              type: number
+    ProductStorePrices:
+      properties:
+        _id:
+          type: string
+        sku:
+          type: string
+        store:
+          type: string
+        price:
+          type: object
+          properties:
+            raw:
+              type: number
+            discount:
+              type: number
+
+    Store:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        code:
+          type: string
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+            longitude:
+              type: number
+        working:
+          type: object
+          properties:
+            open:
+              type: number
+            close:
+              type: number
+
+    Users:
+      properties:
+        _id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+      required:
+        - username
+        - email
+        - password
+        - phone

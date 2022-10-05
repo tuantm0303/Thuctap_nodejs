@@ -4,7 +4,7 @@
   "description": "thuc tap nodejs",
   "main": "main.js",
   "scripts": {
-    "start": "nodemon ./src/main.js --exec babel-node -e js",
+    "start": "nodemon ./src/main.js --exec babel-node -e .yaml -e js",
     "local": "set NODE_ENV=localhost nodemon ./src/main.js --exec babel-node -e js",
     "dev": "NODE_ENV=development",
     "pro": "NODE_ENV=production"
@@ -37,6 +37,8 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "slugify": "^1.6.5"
+    "slugify": "^1.6.5",
+    "swagger-ui-express": "^4.5.0",
+    "yamljs": "^0.3.0"
   }
 }
