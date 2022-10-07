@@ -14,32 +14,40 @@ servers:
 paths:
   /api/products:
     get:
+      security:
+        - bearerAuth: []
       summary: Lấy danh sách sản phẩm
       tags:
         - Get Products
       responses:
         "200":
-          description: Lấy sản phẩm thành công
+          description: Lấy sản phẩm thành công!
         "400":
-          description: Không lấy được sản phẩm
+          description: Không lấy được sản phẩm!
     post:
-      summary: Thêm sản phẩm
+      security:
+        - bearerAuth: []
       tags:
-        - Add Product
+        - Create Product
+      summary: Thêm sản phẩm
+      description: Thêm sản phẩm bán online và bán offline
+      operationId: addProduct
+      requestBody:
+        description: Bắt buộc phải có các trường giống bên dưới
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+        required: true
       responses:
         "200":
-          description: Thêm sản phẩm thành công
+          description: Thêm sản phẩm thành công!
         "400":
-          description: Không thêm được sản phẩm
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "Bắt buộc phải có các trường giống bên dưới"
-          required: true
-          schema:
-            $ref: "#/components/schemas/Product"
+          description: Không thêm được sản phẩm!
   /api/products/{productId}:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - Get One Product
       summary: Lấy một sản phẩm
@@ -54,94 +62,97 @@ paths:
             type: string
       responses:
         "200":
-          description: Lấy một sản phẩm thành công
+          description: Lấy một sản phẩm thành công!
         "400":
-          description: Không lấy được sản phẩm
+          description: Không lấy được sản phẩm!
     put:
+      security:
+        - bearerAuth: []
       tags:
-        - Put One Product
-      summary:
-        Sửa một sản phẩm
-        # parameters:
-        # - name: productId
-        #   in: path
-        #   description: ID product
-        #   required: true
-        #   schema:
-        #     type: string
-      responses:
-        "200":
-          description: Sửa một sản phẩm thành công
-        "400":
-          description: Không sửa được sản phẩm
-    delete:
-      tags:
-        - Delete One Product
-      summary:
-        Xóa một sản phẩm
-        # parameters:
-        # - name: productId
-        #   in: path
-        #   description: ID product
-        #   required: true
-        #   schema:
-        #     type: string
-      responses:
-        "200":
-          description: Xóa một sản phẩm thành công
-        "400":
-          description: Không xóa được sản phẩm
-  /api/stores:
-    get:
-      summary: Lấy danh sách cửa hàng
-      tags:
-        - Get Store
-      responses:
-        "200":
-          description: Lấy cửa hàng thành công
-        "400":
-          description: Không lấy được cửa hàng
-    post:
-      summary: Thêm cửa hàng
-      tags:
-        - Add Store
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "Bắt buộc phải có các trường giống bên dưới"
-          required: true
-          schema:
-            $ref: "#/components/schemas/Store"
-      responses:
-        "200":
-          description: Thêm cửa hàng thành công
-        "400":
-          description: Không thêm được cửa hàng
-  /api/stores/{storeId}:
-    get:
-      tags:
-        - Get One Store
-      summary: Lấy một cửa hàng
-      description: Returns a single pet
-      operationId: getStoreById
+        - Put Product
+      summary: Cập nhật một sản phẩm
+      description: Cập nhật một sản phẩm
+      operationId: updateProductById
       parameters:
         - name: productId
           in: path
-          description: ID một cửa hàng
+          description: Chọn sản phẩm cần cập nhật
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Bắt buộc phải có các trường giống bên dưới
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: Cập nhật sản phẩm thành công!
+        "400":
+          description: Không cập nhật được sản phẩm!
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Delete One Product
+      summary: Xóa một sản phẩm
+      description: Xóa một sản phẩm
+      operationId: deleteProductById
+      parameters:
+        - name: productId
+          in: path
+          description: Product id to delete
           required: true
           schema:
             type: string
       responses:
         "200":
-          description: Lấy một cửa hàng thành công
+          description: Xóa sản phẩm thành công!
         "400":
-          description: Không lấy được cửa hàng
-    put:
+          description: Không xóa được sản phẩm!
+
+  /api/stores:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Lấy danh sách cửa hàng
       tags:
-        - Put One Store
-      summary: Sửa một cửa hàng
+        - Get Stores
+      responses:
+        "200":
+          description: Lấy cửa hàng thành công!
+        "400":
+          description: Không lấy được cửa hàng!
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Create Store
+      summary: Thêm cửa hàng
+      description: Thêm cửa hàng
+      operationId: addStore
+      requestBody:
+        description: Bắt buộc phải có các trường giống bên dưới
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Store"
+        required: true
+      responses:
+        "200":
+          description: Thêm cửa hàng thành công!
+        "400":
+          description: Không thêm được cửa hàng!
+  /api/stores/{storeId}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Get One Store
+      summary: Lấy một cửa hàng
       description: Returns a single pet
-      operationId: putStoreById
+      operationId: getStoreById
       parameters:
         - name: storeId
           in: path
@@ -151,27 +162,99 @@ paths:
             type: string
       responses:
         "200":
-          description: Sửa một cửa hàng thành công
+          description: Lấy một cửa hàng thành công!
         "400":
-          description: Không sửa được cửa hàng
+          description: Không lấy được cửa hàng!
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Put Store
+      summary: Cập nhật một cửa hàng
+      description: Cập nhật một cửa hàng
+      operationId: updateStoreById
+      parameters:
+        - name: storeId
+          in: path
+          description: Chọn cửa hàng cần cập nhật
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Bắt buộc phải có các trường giống bên dưới
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Store"
+      responses:
+        "200":
+          description: Cập nhật cửa hàng thành công!
+        "400":
+          description: Không cập nhật được cửa hàng!
     delete:
+      security:
+        - bearerAuth: []
       tags:
         - Delete One Store
       summary: Xóa một cửa hàng
-      description: Returns a single pet
+      description: Xóa một cửa hàng
       operationId: deleteStoreById
       parameters:
-        - name: productId
+        - name: storeId
           in: path
-          description: ID một cửa hàng
+          description: Strore id to delete
           required: true
           schema:
             type: string
       responses:
         "200":
-          description: Xóa một cửa hàng thành công
+          description: Xóa cửa hàng thành công!
         "400":
-          description: Không xóa được cửa hàng
+          description: Không xóa được cửa hàng!
+  /api/signup:
+    post:
+      tags:
+        - Signup User
+      summary: Đăng kí
+      description: Dành cho user đăng kí
+      operationId: signupUser
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Users"
+      responses:
+        "200":
+          description: Đăng kí thành công!
+        "400":
+          description: Đăng kí thất bại!
+
+  /api/signin:
+    post:
+      tags:
+        - Signin User
+      summary: Đăng nhập
+      description: "Dành cho user đăng nhập"
+      operationId: signinUser
+      parameters:
+        - name: email
+          in: query
+          description: Nhập email của bạn
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: Nhập password của bạn
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Đăng nhập thành công!
+        "400":
+          description: Đăng nhập thất bại!
 
 # Models
 components:
@@ -197,29 +280,12 @@ components:
         unit:
           type: string
         productOnlinePrice:
-          type: object
-          properties:
-            price:
-              type: object
-              properties:
-                raw:
-                  type: number
-                discount:
-                  type: number
+          $ref: "#/components/schemas/ProductOnlinePrice"
         listProductStorePrice:
-          type: object
-          properties:
-            store:
-              type: string
-            price:
-              type: object
-              properties:
-                raw:
-                  type: number
-                discount:
-                  type: number
+          type: array
+          $ref: "#/components/schemas/ProductStorePrice"
 
-    ProductOnlinePrices:
+    ProductOnlinePrice:
       properties:
         _id:
           type: string
@@ -232,7 +298,8 @@ components:
               type: number
             discount:
               type: number
-    ProductStorePrices:
+
+    ProductStorePrice:
       properties:
         _id:
           type: string
@@ -291,3 +358,9 @@ components:
         - email
         - password
         - phone
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
