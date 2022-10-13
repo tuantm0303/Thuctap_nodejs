@@ -1,9 +1,5 @@
-import productController from "./product";
-import storeController from "./store";
-import userController from "./user";
+import * as productController from "./product";
+import * as storeController from "./store";
+import * as userController from "./user";
 
-module.exports = {
-  productController,
-  storeController,
-  userController,
-};
+export default { productController, storeController, userController };

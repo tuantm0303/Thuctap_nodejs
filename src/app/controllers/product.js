@@ -1,7 +1,7 @@
 import { startSession } from "mongoose";
 import { Product, ProductOnline, ProductStore } from "../models";
 
-const list = async (req, res) => {
+export const list = async (req, res) => {
   try {
     const products = await Product.find({}).exec();
     return res.status(200).json(products);
@@ -12,7 +12,7 @@ const list = async (req, res) => {
   }
 };
 
-const read = async (req, res) => {
+export const read = async (req, res) => {
   const condition = { _id: req.params.id };
   try {
     const products = await Product.findOne(condition).exec();
@@ -24,7 +24,7 @@ const read = async (req, res) => {
   }
 };
 
-const create = async (req, res) => {
+export const create = async (req, res) => {
   const session = await startSession();
   try {
     // Get data
@@ -75,7 +75,7 @@ const create = async (req, res) => {
   }
 };
 
-const update = async (req, res) => {
+export const update = async (req, res) => {
   const session = await startSession();
   try {
     // Get data
@@ -131,7 +131,7 @@ const update = async (req, res) => {
   }
 };
 
-const remove = async (req, res) => {
+export const remove = async (req, res) => {
   const session = await startSession();
   try {
     // Get data
@@ -170,7 +170,7 @@ const remove = async (req, res) => {
   }
 };
 
-const search = async (req, res) => {
+export const search = async (req, res) => {
   const key = req.query.q;
   try {
     const result = await Product.find({ $text: { $search: key } }).exec();
@@ -180,13 +180,4 @@ const search = async (req, res) => {
       message: "Không tìm thấy sản phẩm!",
     });
   }
-};
-
-module.exports = {
-  list,
-  read,
-  create,
-  update,
-  remove,
-  search,
 };

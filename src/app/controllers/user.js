@@ -3,7 +3,7 @@ import { User } from "../models";
 import middlewares from "../../middlewares";
 import passport from "passport";
 
-const signup = async (req, res) => {
+export const signup = async (req, res) => {
   const { username, email, password, phone } = req.body;
   try {
     const exitUser = await User.findOne({ email }).exec();
@@ -26,7 +26,7 @@ const signup = async (req, res) => {
 };
 
 // Passport local signin middlewares
-const signin = async (req, res, next) => {
+export const signin = async (req, res, next) => {
   passport.authenticate("local", (error, user, info) => {
     if (error) {
       return res.status(400).json({
@@ -52,15 +52,9 @@ const signin = async (req, res, next) => {
   })(req, res, next);
 };
 
-const signout = async (req, res) => {
+export const signout = async (req, res) => {
   res.clearCookie("token");
   return res.status(200).json({
     message: "Signout Success!",
   });
-};
-
-export default {
-  signup,
-  signin,
-  signout,
 };

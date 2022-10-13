@@ -1,6 +1,6 @@
 import { Store } from "../models";
 
-const list = async (req, res) => {
+export const list = async (req, res) => {
   try {
     const stores = await Store.find({}).exec();
     return res.status(200).json(stores);
@@ -11,7 +11,7 @@ const list = async (req, res) => {
   }
 };
 
-const read = async (req, res) => {
+export const read = async (req, res) => {
   const filter = { _id: req.params.id };
   try {
     const store = await Store.findOne(filter).exec();
@@ -23,7 +23,7 @@ const read = async (req, res) => {
   }
 };
 
-const create = async (req, res) => {
+export const create = async (req, res) => {
   const doc = req.body;
   try {
     const store = await new Store(doc).save();
@@ -35,7 +35,7 @@ const create = async (req, res) => {
   }
 };
 
-const update = async (req, res) => {
+export const update = async (req, res) => {
   const filter = { _id: req.params.id };
   const doc = req.body;
   const option = { new: true };
@@ -49,7 +49,7 @@ const update = async (req, res) => {
   }
 };
 
-const remove = async (req, res) => {
+export const remove = async (req, res) => {
   const filter = { _id: req.params.id };
   try {
     const store = await Store.findOneAndDelete(filter).exec();
@@ -62,12 +62,4 @@ const remove = async (req, res) => {
       message: "Không xóa được cửa hàng!",
     });
   }
-};
-
-module.exports = {
-  list,
-  create,
-  read,
-  update,
-  remove,
 };
