@@ -3,7 +3,7 @@ import mongoose, { Schema, ObjectId } from "mongoose";
 const orderLineSchema = new Schema(
   {
     orderId: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.ObjectId,
       ref: "Orders",
     },
     owner: {
@@ -11,8 +11,8 @@ const orderLineSchema = new Schema(
       required: true,
     },
     product: {
-      type: ObjectId,
-      ref: "Products",
+      type: String,
+      required: true,
     },
     sale: {
       type: String,
