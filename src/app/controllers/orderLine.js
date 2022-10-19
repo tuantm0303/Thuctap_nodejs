@@ -1,4 +1,4 @@
-import { Order, OrderLine, OrderReview } from "../models";
+import { OrderLine } from "../models";
 
 export const list = async (req, res) => {
   try {
@@ -15,7 +15,6 @@ export const read = async (req, res) => {
   const filter = { _id: req.params.id };
   try {
     const orderLine = await OrderLine.findOne(filter).exec();
-    // console.log("orderLine: ", orderLine.order);
     return res.status(200).json(orderLine);
   } catch (error) {
     return res.status(400).json({
