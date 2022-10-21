@@ -1,4 +1,4 @@
-import { Order, OrderLine } from "../models";
+import { Order, OrderLine, OrderReview } from "../models";
 import mongoose from "mongoose";
 
 export const list = async (req, res) => {
@@ -112,6 +112,24 @@ export const readReview = async (req, res) => {
   } catch (error) {
     return res.status(400).json({
       message: "Không có đơn hàng!",
+    });
+  }
+};
+
+export const createReview = async (req, res) => {
+  const doc = req.body;
+  const filter = { _id: req.params.id };
+  try {
+    const orderId = await Order.findOne(filter).exec();
+    const orderLines = await OrderLine.find({ orderId })
+      .select("-orderId")
+      .exec();
+    const newReview = await new OrderReview(doc).save();
+
+    return res.status(200).json({ orderLines, newReview });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Không thêm được nhận xét!",
     });
   }
 };
