@@ -122,16 +122,17 @@ export const readReview = async (req, res) => {
 };
 
 export const createReview = async (req, res) => {
-  const filter = { _id: req.params.id };
+  const filter = req.body.orderId;
   const doc = req.body.productOrders;
   const review = doc.map((item) => item);
   try {
     const addReview = await OrderReview.create(
       review.map((item) => ({
         ...item,
-        orderId: filter._id,
+        orderId: filter,
       }))
     );
+
     return res.status(200).json({
       status: 200,
       message: "Thêm nhận xét thành công!",

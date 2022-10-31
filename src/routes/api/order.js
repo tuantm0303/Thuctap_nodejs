@@ -8,6 +8,6 @@ routerOrder.get("/", controller.orderController.list);
 routerOrder.get("/:id", controller.orderController.read);
 routerOrder.get("/review/:id", controller.orderController.readReview);
 routerOrder.put("/:id", controller.orderController.update);
-routerOrder.post("/addReview/:id", controller.orderController.createReview);
+routerOrder.post("/addReview", controller.orderController.createReview);
 
 export default routerOrder;
