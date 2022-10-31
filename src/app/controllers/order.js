@@ -107,28 +107,39 @@ export const readReview = async (req, res) => {
       },
     ];
 
-    const products = await OrderLine.aggregate(pipeline);
-    return res.status(200).json({ orderLines, products });
+    const productOrders = await OrderLine.aggregate(pipeline, orderLines);
+    return res.status(200).json({
+      status: 200,
+      message: "Lấy danh sách đơn hàng thành công!",
+      productOrders,
+    });
   } catch (error) {
     return res.status(400).json({
+      status: 400,
       message: "Không có đơn hàng!",
     });
   }
 };
 
 export const createReview = async (req, res) => {
-  const doc = req.body;
   const filter = { _id: req.params.id };
+  const doc = req.body.productOrders;
+  const review = doc.map((item) => item);
   try {
-    const orderId = await Order.findOne(filter).exec();
-    const orderLines = await OrderLine.find({ orderId })
-      .select("-orderId")
-      .exec();
-    const newReview = await new OrderReview(doc).save();
-
-    return res.status(200).json({ orderLines, newReview });
+    const addReview = await OrderReview.create(
+      review.map((item) => ({
+        ...item,
+        orderId: filter._id,
+      }))
+    );
+    return res.status(200).json({
+      status: 200,
+      message: "Thêm nhận xét thành công!",
+      addReview,
+    });
   } catch (error) {
     return res.status(400).json({
+      status: 400,
       message: "Không thêm được nhận xét!",
     });
   }
