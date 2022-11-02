@@ -124,24 +124,40 @@ export const readReview = async (req, res) => {
 export const createReview = async (req, res) => {
   const filter = req.body.orderId;
   const doc = req.body.productOrders;
-  const review = doc.map((item) => item);
+  const product = doc.map((item) => item.product);
   try {
+    const checkDB = await OrderLine.findOne({ product: product }).exec();
+    if (!checkDB) {
+      return res.status(400).json({
+        status: 400,
+        message: "Sản phẩm không tồn tại trong đơn hàng",
+      });
+    }
+
+    const exitReview = await OrderReview.findOne({ product: product }).exec();
+    if (exitReview) {
+      return res.status(400).json({
+        status: 400,
+        message: "Sản phẩm đã được đánh giá. Không được đánh giá nữa!",
+      });
+    }
+
     const addReview = await OrderReview.create(
-      review.map((item) => ({
+      doc.map((item) => ({
         ...item,
         orderId: filter,
       }))
     );
-
     return res.status(200).json({
       status: 200,
-      message: "Thêm nhận xét thành công!",
+      message: "Đánh giá thành công!",
       addReview,
     });
   } catch (error) {
+    console.log(error);
     return res.status(400).json({
       status: 400,
-      message: "Không thêm được nhận xét!",
+      message: "Không thêm được đánh giá!",
     });
   }
 };
