@@ -23,7 +23,7 @@ app.use(passport.session());
 app.use(routes);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerJSDocs));
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log("Server running port", PORT);
 });
