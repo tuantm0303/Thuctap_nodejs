@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "thuc tap nodejs",
   "main": "main.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "start": "nodemon ./src/main.js --exec babel-node",
     "local": "set NODE_ENV=localhost nodemon ./src/main.js --exec babel-node -e js",
