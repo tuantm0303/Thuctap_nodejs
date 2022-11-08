@@ -211,6 +211,48 @@ paths:
           description: Xóa cửa hàng thành công!
         "400":
           description: Không xóa được cửa hàng!
+
+  /api/orders/review/{orderId}:
+    get:
+      tags:
+        - Get Order Review by Order
+      summary: Lấy danh sách đơn hàng đã review theo id đơn hàng
+      parameters:
+        - name: orderId
+          in: path
+          description: ID một đơn hàng
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lấy danh sách đơn hàng đã review theo id đơn hàng thành công!
+        "400":
+          description: Không lấy được đơn hàng!
+  /api/orders/addReview:
+    post:
+      tags:
+        - Create Order Review by Order
+      summary: Tạo đơn hàng theo id đơn hàng
+      parameters:
+        - name: orderId
+          in: path
+          description: ID một đơn hàng
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Bắt buộc phải có các trường giống bên dưới
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderReviewByOrder"
+      responses:
+        "200":
+          description: Tạo danh sách đơn hàng đã review theo id đơn hàng thành công!
+        "400":
+          description: Không thêm được đơn hàng!
+
   /api/signup:
     post:
       tags:
@@ -261,8 +303,6 @@ components:
   schemas:
     Product:
       properties:
-        _id:
-          type: string
         brand:
           type: number
         name:
@@ -287,8 +327,6 @@ components:
 
     ProductOnlinePrice:
       properties:
-        _id:
-          type: string
         sku:
           type: string
         price:
@@ -301,8 +339,6 @@ components:
 
     ProductStorePrice:
       properties:
-        _id:
-          type: string
         sku:
           type: string
         store:
@@ -318,8 +354,6 @@ components:
     Store:
       type: object
       properties:
-        _id:
-          type: string
         name:
           type: string
         address:
@@ -343,8 +377,6 @@ components:
 
     Users:
       properties:
-        _id:
-          type: string
         username:
           type: string
         email:
@@ -358,6 +390,61 @@ components:
         - email
         - password
         - phone
+
+    OrderLine:
+      properties:
+        orderId:
+          type: string
+        owner:
+          type: number
+        product:
+          type: string
+        sale:
+          type: string
+        type:
+          type: string
+        amount:
+          type: number
+        bixu:
+          type: number
+        price:
+          type: object
+        quantity:
+          type: number
+
+    OrderReview:
+      properties:
+        orderId:
+          type: string
+        product:
+          type: string
+        rate:
+          type: number
+        comment:
+          type: string
+        media:
+          type: object
+          properties:
+            type:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  url:
+                    type: string
+        owner:
+          type: number
+
+    OrderReviewByOrder:
+      properties:
+        productOrders:
+          type: array
+          items:
+            type: object
+            properties:
+            $ref: "#/components/schemas/OrderReview"
 
   securitySchemes:
     bearerAuth:
