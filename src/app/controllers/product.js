@@ -24,6 +24,18 @@ export const read = async (req, res) => {
   }
 };
 
+export const readSku = async (req, res) => {
+  const condition = { sku: req.params.sku };
+  try {
+    const products = await Product.findOne(condition).exec();
+    return res.status(200).json(products);
+  } catch (error) {
+    return res.status(400).json({
+      message: "Không có sản phẩm!",
+    });
+  }
+};
+
 export const create = async (req, res) => {
   const session = await startSession();
   try {

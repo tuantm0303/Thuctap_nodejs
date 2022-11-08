@@ -51,7 +51,6 @@ paths:
       tags:
         - Get One Product
       summary: Lấy một sản phẩm
-      description: Returns a single pet
       operationId: getProductById
       parameters:
         - name: productId
@@ -112,6 +111,26 @@ paths:
         "400":
           description: Không xóa được sản phẩm!
 
+  /api/products/sku/{productSku}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Get One Product Sku
+      summary: Lấy một sản phẩm bằng sku
+      parameters:
+        - name: productSku
+          in: path
+          description: Sku một sản phẩm
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lấy một sản phẩm thành công!
+        "400":
+          description: Không lấy được sản phẩm!
+
   /api/stores:
     get:
       security:
@@ -151,7 +170,6 @@ paths:
       tags:
         - Get One Store
       summary: Lấy một cửa hàng
-      description: Returns a single pet
       operationId: getStoreById
       parameters:
         - name: storeId
