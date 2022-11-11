@@ -35,6 +35,20 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+userSchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate();
+  if (update.password) {
+    const passwordHash = await bcrypt.hash(update.password, 10);
+    this.setUpdate({
+      $set: {
+        password: passwordHash,
+        confirmpw: undefined,
+      },
+    });
+  }
+  next();
+});
+
 // Authenticate password
 userSchema.methods.isValidPassword = async function (password) {
   try {
