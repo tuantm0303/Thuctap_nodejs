@@ -61,19 +61,22 @@ export const signin = async (req, res, next) => {
 };
 
 export const update = async (req, res) => {
-  const filter = { username: req.params.username };
-  const { username, email, password, phone } = req.body;
-  const option = { new: true };
+  const { password } = req.body;
   try {
-    const getUser = await User.findOneAndUpdate(
-      filter,
-      { username, email, password, phone },
-      option
-    ).exec();
-    console.log("getUser: ", getUser);
-    return res.status(400).json(getUser);
+    const user = await User.findOneAndUpdate(
+      { username: req.params.username },
+      { password: password },
+      { new: true }
+    );
+    return res.status(200).json({
+      status: 200,
+      message: "Thay đổi thông tin thành công!",
+      user: {
+        ...req.body,
+        password: user.password,
+      },
+    });
   } catch (error) {
-    console.log(error);
     return res.status(400).json({
       status: 400,
       message: "Có lỗi rồi hãy thử lại sau!",
