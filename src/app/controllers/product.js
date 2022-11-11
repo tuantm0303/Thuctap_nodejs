@@ -1,5 +1,5 @@
 import { startSession } from "mongoose";
-import { Product, ProductOnline, ProductStore } from "../models";
+import { Product, ProductOnline, ProductStore, Store } from "../models";
 
 export const list = async (req, res) => {
   try {
@@ -27,8 +27,16 @@ export const read = async (req, res) => {
 export const readSku = async (req, res) => {
   const condition = { sku: req.params.sku };
   try {
-    const products = await Product.findOne(condition).exec();
-    return res.status(200).json(products);
+    const product = await Product.findOne(condition).exec();
+    const productOnlines = await ProductOnline.find(condition).exec();
+    const productStores = await ProductStore.find(condition).exec();
+    return res.status(200).json({
+      status: 200,
+      message: "Đã tìm thấy sản phẩm!",
+      product,
+      productOnlines,
+      productStores,
+    });
   } catch (error) {
     return res.status(400).json({
       message: "Không có sản phẩm!",
