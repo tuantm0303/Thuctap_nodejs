@@ -4,7 +4,7 @@ import { jwtAuth } from "../../middlewares";
 
 const routerProduct = Router();
 
-// routerProduct.use("/", jwtAuth);
+routerProduct.use("/", jwtAuth);
 
 routerProduct.post("/", controller.productController.create);
 routerProduct.get("/", controller.productController.list);

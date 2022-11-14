@@ -1,5 +1,5 @@
 import { startSession } from "mongoose";
-import { Product, ProductOnline, ProductStore, Store } from "../models";
+import { Product, ProductOnline, ProductStore } from "../models";
 
 export const list = async (req, res) => {
   try {
