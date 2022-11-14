@@ -4,7 +4,11 @@ import { Product, ProductOnline, ProductStore } from "../models";
 export const list = async (req, res) => {
   try {
     const products = await Product.find({}).exec();
-    return res.status(200).json(products);
+    return res.status(200).json({
+      status: 200,
+      message: "Tất cả sản phẩm!",
+      products,
+    });
   } catch (error) {
     return res.status(400).json({
       message: "Không có sản phẩm nào!",
@@ -15,8 +19,12 @@ export const list = async (req, res) => {
 export const read = async (req, res) => {
   const condition = { _id: req.params.id };
   try {
-    const products = await Product.findOne(condition).exec();
-    return res.status(200).json(products);
+    const product = await Product.findOne(condition).exec();
+    return res.status(200).json({
+      status: 200,
+      message: "Tìm thấy sản phẩm!",
+      product,
+    });
   } catch (error) {
     return res.status(400).json({
       message: "Không có sản phẩm!",
@@ -39,7 +47,7 @@ export const readSku = async (req, res) => {
 
       return res.status(200).json({
         status: 200,
-        message: `Đã tìm thấy sản phẩm tại cửa hàng có mã ${store}`,
+        message: `Tìm thấy sản phẩm tại cửa hàng có mã ${store}`,
         data: {
           product,
           price,
@@ -55,7 +63,7 @@ export const readSku = async (req, res) => {
 
       return res.status(200).json({
         status: 200,
-        message: "Đã tìm thấy sản phẩm!",
+        message: "Tìm thấy sản phẩm!",
         data: { product, price },
       });
     }
@@ -101,7 +109,9 @@ export const create = async (req, res) => {
     session.endSession();
 
     // Response
-    res.status(200).json({
+    return res.status(200).json({
+      status: 200,
+      message: "Thêm thành công!",
       ...product,
       productOnlinePrice: productOnlinePrice,
       productStorePrice: listProductStorePriceResponse,
@@ -159,6 +169,8 @@ export const update = async (req, res) => {
 
     // Response
     return res.status(200).json({
+      status: 200,
+      message: "Cập nhật sản phẩm thành công!",
       ...product,
       productOnlinePrice: productOnlinePrice,
       productStorePrice: listProductStorePriceResponse,
@@ -166,7 +178,7 @@ export const update = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    res.status(400).json({
+    return res.status(400).json({
       status: 400,
       message: "Không sửa được sản phẩm!",
     });
@@ -197,6 +209,7 @@ export const remove = async (req, res) => {
 
     // Response
     return res.status(200).json({
+      status: 200,
       message: "Xóa thành công!",
       ...product,
       productOnlinePrice,
@@ -213,12 +226,17 @@ export const remove = async (req, res) => {
 };
 
 export const search = async (req, res) => {
-  const key = req.query.q;
+  const { q } = req.query;
   try {
-    const result = await Product.find({ $text: { $search: key } }).exec();
-    return res.status(200).json(result);
+    const result = await Product.find({ $text: { $search: q } }).exec();
+    return res.status(200).json({
+      status: 200,
+      message: "Những sản phẩm tìm kiếm",
+      result,
+    });
   } catch (error) {
     return res.status(400).json({
+      status: 400,
       message: "Không tìm thấy sản phẩm!",
     });
   }
