@@ -154,7 +154,6 @@ export const createReview = async (req, res) => {
       addReview,
     });
   } catch (error) {
-    console.log(error);
     return res.status(400).json({
       status: 400,
       message: "Không thêm được đánh giá!",
